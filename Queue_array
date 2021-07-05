@@ -1,0 +1,174 @@
+// DEKLARASI & INISIALISASI PROGRAM
+#include <iostream>
+using namespace std;
+
+int maxsimal = 5, front = 0, back = 0; //array antrean
+string Queue[5];                       //ruang antrean
+
+// isFull (untuk memeriksa apakah ruang queue sudah penuh atau belum)
+bool isFullArray()
+{
+    if (back == maxsimal)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+//isEmpty (untuk memeriksa apakah ruang queue kosong atau tidak)
+bool isEmptyArray()
+{
+    if (back == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+// ENQUEUE (untuk menambahkan data ke antrean)
+void EnqueueArray(string data)
+{
+    if (isFullArray())
+    {
+        cout << "ANTREAN PENUH" << endl;
+    }
+    else
+    {
+        //mengecek data kosong atau tidak
+        if (isEmptyArray())
+        {
+            //Jika antrean kosong
+            Queue[0] = data; // antrean pertama diisi dengan data yang diambil dari parameter
+            front++;
+            back++;
+        }
+        else
+        {
+            //jika antrean tidak kosong
+            Queue[back] = data; //antrean index paling akhir diisi data yang diambil dari parameter
+            back++;
+        }
+    }
+}
+
+// DEQUEUE (untuk menghapus data pada antrean)
+void DequeueArray()
+{
+    if (isEmptyArray())
+    {
+        cout << "ANTREAN KOSONG" << endl;
+    }
+    else
+    {
+        for (int i = 0; i < back; i++)
+        {
+            // mengahapus data yang berada di posisi paling depan
+            Queue[i] = Queue[i + 1];
+        }
+        back--;
+    }
+}
+
+// DESTROY (untuk membersihkan semua data pada queue)
+void DestroyArray()
+{
+    if (isEmptyArray())
+    {
+        cout << "ANTREAN KOSONG" << endl;
+    }
+    else
+    {
+        for (int i = 0; i < maxsimal; i++)
+        {
+            if (back > 1)
+            {
+                Queue[back - 1] = "";
+                back--;
+            }
+            else if (back == 1)
+            {
+                Queue[back - 1] = "";
+                back = 0;
+                front = 0;
+            }
+        }
+    }
+}
+
+// COUNT (untuk menghitung banyak data pada antrean)
+int CountArray()
+{
+    if (isEmptyArray())
+    {
+        return 0;
+    }
+    else if (isFullArray())
+    {
+        return maxsimal;
+    }
+    else
+    {
+        return back;
+    }
+}
+
+// DISPLAY (untuk mencetak semua data pada antrean)
+void Display()
+{
+    cout << "Jumlah yang antre = " << CountArray() << " data" << endl;
+    cout << "Data antrean : " << endl;
+    if (isEmptyArray())
+    {
+        cout << "ANTREAN KOSONG" << endl;
+    }
+    else
+    {
+        // mengecek apakah ruangan array kosong atau tidak
+        for (int i = 0; i < maxsimal; i++)
+        {
+            if (Queue[i] != "")
+            {
+                //cetak jika ruangan tidak kosong
+                cout << i + 1 << ". " << Queue[i] << endl;
+            }
+            else
+            {
+                //cetak jika ruangan kosong
+                cout << i + 1 << ". (kosong)" << endl;
+            }
+        }
+    }
+    cout << endl;
+}
+
+int main()
+{
+    cout << "*CONTOH JIKA DATA KOSONG*" << endl;
+    Display();
+
+    cout << "*CONTOH MENAMBAH DATA*" << endl;
+    EnqueueArray("React JS");
+    EnqueueArray("Laravel");
+    EnqueueArray("Vue JS");
+    EnqueueArray("CodeIgniter");
+    EnqueueArray("Node JS");
+    Display();
+
+    cout << "*CONTOH JIKA DATA FULL*" << endl;
+    EnqueueArray("Bootstrap");
+    Display();
+
+    cout << "*CONTOH MENGHAPUS DATA*" << endl;
+    DequeueArray();
+    Display();
+
+    cout << "*CONTOH MENGHAPUS SEMUA DATA*" << endl;
+    DestroyArray();
+    Display();
+}

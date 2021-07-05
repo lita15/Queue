@@ -1,0 +1,161 @@
+// DEKLARASI PROGRAM
+#include <iostream>
+using namespace std;
+
+struct QueueLL //menyiapkan ruang antrian
+{
+    //data
+    string nama;
+    int point;
+    QueueLL *next; // pointer
+};
+
+//variabel pointer ruang lingkup global
+QueueLL *head, *tail, *cur, *del, *newNode;
+
+// COUNT (untuk menghitung banyak data pada antrean)
+int CountLL()
+{
+    //apabila head belum terdapat data didalamnya
+    if (head == NULL)
+    {
+        return 0;
+    }
+    //apabila head sudah terdapat data didalamnya
+    else
+    {
+        int banyak = 0;
+        cur = head;
+        while (cur != NULL)
+        {
+            cur = cur->next;
+            banyak++;
+        }
+        return banyak;
+    }
+}
+
+//isEmpty (untuk memeriksa apakah ruang queue kosong atau tidak)
+bool isEmptyLL()
+{
+    if (CountLL() == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+// ENQUEUE (untuk menambahkan data ke antrean)
+void EnqueueLL(string nama, int point)
+{
+
+    if (isEmptyLL())
+    {
+        //Jika antrean kosong
+        head = new QueueLL();
+        head->nama = nama;
+        head->point = point;
+        head->next = NULL;
+        tail = head;
+    }
+    else
+    {
+        //Jika antrean tidak kosong
+        newNode = new QueueLL();
+        newNode->nama = nama;
+        newNode->point = point;
+        newNode->next = NULL;
+        tail->next = newNode;
+        tail = newNode;
+    }
+}
+
+// DEQUEUE (untuk menghapus data pada antrean)
+void DequeueLL()
+{
+    if (isEmptyLL())
+    {
+        cout << "DATA ANTREAN KOSONG" << endl;
+    }
+    else
+    {
+        del = head;
+        head = head->next;
+        del->next = tail;
+        delete del;
+    }
+}
+
+// DESTROY (untuk membersihkan semua data pada queue)
+void DestroyLL()
+{
+    if (isEmptyLL())
+    {
+        cout << "DATA ANTREAN KOSONG" << endl;
+    }
+    else
+    {
+        cur = head;
+        while (cur != NULL)
+        {
+            del = cur;
+            cur = cur->next;
+            del->next = NULL;
+            delete del;
+        }
+        head = NULL;
+        tail = NULL;
+    }
+}
+
+// DISPLAY (untuk mencetak semua data pada antrean)
+void DisplayLL()
+{
+    cout << "Data Antrean: " << endl;
+
+    // apabila antrean kosong
+    if (isEmptyLL())
+    {
+        cout << "DATA ANTREAN KOSONG" << endl;
+    }
+    // apabila antrean tidak kosong
+    else
+    {
+        cout << "Jumlah data Antrean: " << CountLL() << endl;
+        cur = head;
+        int number = 1;
+        while (cur != NULL)
+        {
+            cout << number << ". ";
+            cout << "Nama Freamwork = " << cur->nama << endl;
+            cout << "Penguasaan Materi = " << cur->point << " %" << endl;
+            cur = cur->next;
+            number++;
+        }
+    }
+    cout << "\n\n";
+}
+
+int main()
+{
+    cout << "*CONTOH JIKA DATA KOSONG*" << endl;
+    DisplayLL();
+
+    cout << "*CONTOH MENAMBAH DATA*" << endl;
+    EnqueueLL("React JS", 35);
+    EnqueueLL("Node Js", 88);
+    EnqueueLL("Laravel", 43);
+    EnqueueLL("jQuery", 28);
+    DisplayLL();
+
+    cout << "*CONTOH MENGHAPUS DATA*" << endl;
+    DequeueLL();
+    DisplayLL();
+
+    cout << "*CONTOH MENGHAPUS SEMUA DATA*" << endl;
+    DestroyLL();
+    DisplayLL();
+}
